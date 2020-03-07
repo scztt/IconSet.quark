@@ -1,0 +1,75 @@
+TITLE:: IconSet
+summary:: Base class for collections of icons
+categories:: GUI
+related:: Classes/Image, Class/Material, Class/Linea
+
+DESCRIPTION::
+An IconSet provides straightforward access to a set of Icons.
+Icons are loaded from SVG's into bitmaps, and can be tinted and sized;
+
+NOTE::
+
+An icon set must be downloaded before it can be used! This can be done via:
+CODE::
+(
+Material.fetch;
+Linea.fetch;
+)
+::
+These icons are stored as Quarks in the Quarks download folder, but they do not need to be installed.
+Installing these icon quarks can cause SuperCollider to launch and show help more slowly.
+::
+
+
+EXAMPLES::
+
+code::
+(
+ToolBar(
+	MenuAction("Louder").icon_(Linea("music_volume_up")),
+	MenuAction("Quieter").icon_(Linea("music_volume_down")),
+	MenuAction("Or nothing at all").icon_(Linea("music_mute"))
+)
+.toolButtonStyle_(QToolButtonStyle.textBesideIcon)
+.bounds_(400@60)
+.front;
+)
+
+::
+
+
+CLASSMETHODS::
+
+METHOD:: pixelRatio
+A global pixel ratio for loading icons into bitmaps. This should be set to 1 on low-dpi systems, and 2 for high-dpi systems.
+
+SECTION:: Managing IconSet's
+
+METHOD:: browse
+Display a window showing all icons in the set. Icons can be dragged into the IDE to produce the code required to load them.
+
+METHOD:: icons
+Return a list of all icon names in the set.
+
+METHOD:: fetch
+Download an IconSet.
+
+METHOD:: update
+Update an IconSet from it's git repository.
+
+
+METHOD:: new
+Load an icon from the set. This returns a link::Classes/Image::
+
+argument:: name
+The name of the icon - names are based on a simplfied form of the filename of the icon in the set (for example, "ic_star_white_38dp.png" becomes "ic_star").
+Names can be found using the link::Classes/IconSet#browse:: or link::Classes/IconSet#icons::.
+argument:: height
+Height of the icon. Width is determined automatically to keep a consistant aspect ratio. Note that when icons are being used in buttons and menu items, they may be resized by the Button. Make sure to load an icon that matches or is larger than the button you're attaching it to.
+argument:: color
+A color to tint the icon. Default is code::QtGUI.palette.buttonText::
+argument:: format
+code::\png:: or code::\svg:: (default is code::\svg::).
+The file format to use when loading. SVG is scalable, but PNG may look better if a pre-scaled icon is available for a low resolution.
+In most cases, code::\svg:: should be used.
+

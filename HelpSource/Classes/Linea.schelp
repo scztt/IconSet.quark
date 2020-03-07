@@ -1,0 +1,36 @@
+TITLE:: Linea
+summary:: Icon set for the open-source Linea icon collection.
+categories:: GUI
+related:: Classes/IconSet, Classes/Material
+
+DESCRIPTION::
+The Linea open-source icon set.
+https://github.com/linea-io/Linea-Iconset
+
+See link::Classes/IconSet:: for detailed documentation;
+
+EXAMPLES::
+
+Install the icon set:
+code::
+Linea.fetch;
+::
+
+Browse the icons:
+code::
+Linea.browse;
+::
+
+Example usage:
+code::
+(
+ToolBar(
+	MenuAction("Louder").icon_(Linea("music_volume_up")),
+	MenuAction("Quieter").icon_(Linea("music_volume_down")),
+	MenuAction("Or nothing at all").icon_(Linea("music_mute"))
+)
+.toolButtonStyle_(QToolButtonStyle.textBesideIcon)
+.bounds_(400@60)
+.front;
+)
+::

@@ -1,0 +1,36 @@
+TITLE:: Material
+summary:: Icon set for the open-source Material icon collection.
+categories:: GUI
+related:: Classes/IconSet, Classes/Linea
+
+DESCRIPTION::
+The Material open-source icon set.
+https://github.com/google/material-design-icons
+
+See link::Classes/IconSet:: for detailed documentation;
+
+EXAMPLES::
+
+Install the icon set:
+code::
+Material.fetch;
+::
+
+Browse the icons:
+code::
+Material.browse;
+::
+
+Example usage:
+code::
+(
+ToolBar(
+	MenuAction("Louder").icon_(Material("volume_up")),
+	MenuAction("Quieter").icon_(Material("volume_down")),
+	MenuAction("Or nothing at all").icon_(Material("volume_off"))
+)
+.toolButtonStyle_(QToolButtonStyle.textBesideIcon)
+.bounds_(400@60)
+.front;
+)
+::
