@@ -1,0 +1,16 @@
+(
+          name: "IconSet",
+       summary: "Encapsulates collections of open-source icons.",
+        author: "Scott Carver",
+     copyright: "2020",
+       license: "MIT",
+       version: "0.0.1",
+        schelp: "IconSet",
+          test: "",
+           url: "https://github.com/scztt/IconSet.quark",
+  dependencies: [
+
+                ],
+  isCompatible: false ,
+         since: ""
+)
