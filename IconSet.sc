@@ -1,12 +1,16 @@
-Icon {
-	classvar <>pixelRatio = 2, rootPath, iconQuark;
+IconSet {
+	classvar <>pixelRatio = 2, rootPaths, iconQuarks;
 
 	*iconUrl { this.subclassResponsibility(thisMethod).throw }
 	*iconUrl_{ this.subclassResponsibility(thisMethod).throw }
+	*icons { this.subclassResponsibility(thisMethod).throw }
 
 	*initClass {
 		Class.initClassTree(Quark);
 		Class.initClassTree(Quarks);
+
+		rootPaths = ();
+		iconQuarks = ();
 
 		this.subclasses.do {
 			|subclass|
@@ -20,7 +24,11 @@ Icon {
 	}
 
 	*quark {
-		^iconQuark ?? { iconQuark = Quark(this.iconUrl) }
+		var q;
+		^(iconQuarks[this] ?? {
+			iconQuarks[this] = q = Quark(this.iconUrl);
+			q;
+		})
 	}
 	*fetch { ^this.checkout }
 	*checkout {
@@ -35,15 +43,21 @@ Icon {
 	}
 
 	*rootPath {
+		var p;
+
 		if (this.quark.isDownloaded.not) {
 			Error("Icons not installed for %. Install icons usng: '%.fetch'".format(this.name, this.name)).throw
 		} {
-			^rootPath ?? { rootPath = PathName(this.quark.localPath).fullPath };
+			^(rootPaths[this] ?? {
+				rootPaths[this] = p = PathName(this.quark.localPath).fullPath;
+				p;
+			});
 		}
 	}
 
 	*new {
 		|name, height=64, color=nil, format='svg'|
+		color = color ?? QtGUI.palette.buttonText;
 		switch (
 			format.asString.toLower.asSymbol,
 			{ 'png' }, { ^this.newPNG(name, height, color) },
@@ -154,8 +168,9 @@ Icon {
 	}
 }
 
-Material : Icon {
-	classvar <>iconUrl = "https://github.com/google/material-design-icons.git";
+Material : IconSet {
+	classvar <>iconUrl = "https://github.com/google/material-design-icons.git",
+	folders;
 
 	*icons {
 		|type|
@@ -186,25 +201,15 @@ Material : Icon {
 
 
 	*folders {
-		^[
-			"alert",
-			"communication",
-			"editor",
-			"hardware",
-			"notification",
-			"social",
-			"av",
-			"content",
-			"file",
-			"maps",
-			"sprites",
-			"action",
-			"device",
-			"image",
-			"navigation",
-			"places",
-			"toggle",
-		]
+		^(folders ?? {
+			folders = (this.rootPath +/+ "*").pathMatch;
+			folders = folders.select(_.isFolder);
+			folders = folders.collect({ |f| PathName(f).folderName });
+			folders = folders.reject({
+				|name|
+				name.contains(".") or: { [\iconfont, \sprites].includes(name.asSymbol) }
+			});
+		})
 	}
 
 	*findFile {
@@ -257,15 +262,11 @@ Material : Icon {
 	}
 }
 
-Linea : Icon {
+Linea : IconSet {
 	classvar <>iconUrl = "https://github.com/linea-io/Linea-Iconset.git";
 
 	*folders {
 		^["_arrows", "_basic", "_basic_elaboration", "_ecommerce", "_music", "_software", "_weather"];
-	}
-
-	*rootPath {
-		^PathName(Linea.filenameSymbol.asString).pathOnly +/+ "../Linea-icons" +/+ "linea";
 	}
 
 	*icons {
