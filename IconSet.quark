@@ -11,6 +11,6 @@
   dependencies: [
 
                 ],
-  isCompatible: false ,
+  isCompatible: true ,
          since: ""
 )
