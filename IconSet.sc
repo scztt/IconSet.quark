@@ -203,8 +203,8 @@ Material : IconSet {
 	*folders {
 		^(folders ?? {
 			folders = (this.rootPath +/+ "*").pathMatch;
-			folders = folders.select(_.isFolder);
-			folders = folders.collect({ |f| PathName(f).folderName });
+			folders = folders.collect(PathName(_)).select(_.isFolder);
+			folders = folders.collect({ |f| f.folderName });
 			folders = folders.reject({
 				|name|
 				name.contains(".") or: { [\iconfont, \sprites].includes(name.asSymbol) }
