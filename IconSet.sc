@@ -77,18 +77,30 @@ IconSet {
         |name, height=64, color=nil|
         var path, image;
         
-        path = this.findFile(name, \png, height);
-        image = Image.open(path).pixelRatio_(pixelRatio);
-        ^this.resizedTintedImage(image, height * pixelRatio, color);
+        try {
+            path = this.findFile(name, \png, height);
+            image = Image.open(path).pixelRatio_(pixelRatio);
+            ^this.resizedTintedImage(image, height * pixelRatio, color);
+        } {
+            |e|
+            e.what.error;
+            ^Image(height)
+        }
     }
     
     *newSVG {
         |name, height=64, color=nil|
         var path, image;
         
-        path = this.findFile(name, \svg, height);
-        image = Image.openSVG(path, (height * pixelRatio).asSize).pixelRatio_(pixelRatio);
-        ^this.resizedTintedImage(image, height * pixelRatio, color);
+        try {
+            path = this.findFile(name, \svg, height);
+            image = Image.openSVG(path, (height * pixelRatio).asSize).pixelRatio_(pixelRatio);
+            ^this.resizedTintedImage(image, height * pixelRatio, color);
+        } {
+            |e|
+            e.what.error;
+            ^Image(height)
+        }
     }
     
     *browse {
